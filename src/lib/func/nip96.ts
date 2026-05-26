@@ -1,3 +1,5 @@
+const FILE_SERVER_PREFERENCE_KIND = 10096;
+
 import type { EventTemplate } from "@nostr-dev-kit/ndk";
 
 export function normalizeServerUrls(serverUrls: string[]): string[] {
