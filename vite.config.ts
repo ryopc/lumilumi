@@ -1,5 +1,4 @@
 import { sveltekit } from "@sveltejs/kit/vite";
-import { SvelteKitPWA } from "@vite-pwa/sveltekit";
 import { defineConfig } from "vite";
 import { svelteTesting } from "@testing-library/svelte/vite";
 import { nodePolyfills } from "vite-plugin-node-polyfills";
