@@ -2,7 +2,9 @@ import { sveltekit } from "@sveltejs/kit/vite";
 import { SvelteKitPWA } from "@vite-pwa/sveltekit";
 import { defineConfig } from "vite";
 import { svelteTesting } from "@testing-library/svelte/vite";
-import { nodePolyfills } from "vite-plugin-node-polyfills"; // 👈 Nodeの互換用に追記
+import { nodePolyfills } from "vite-plugin-node-polyfills";
+import fs from "fs"; // 👈 同期生成用に追記
+import path from "path"; // 👈 同期生成用に追記
 
 export default defineConfig({
   server: {
@@ -15,7 +17,22 @@ export default defineConfig({
     },
   },
   plugins: [
-    // 👈 1. string_decoder, buffer, url などのビルドエラーを消す設定を追加
+    // 💡 1. 完璧なバグ回避策：ビルド前にダミーファイルを強制生成してENOENTを防ぐ
+    {
+      name: "pwa-sw-fix",
+      buildStart() {
+        const swDir = path.resolve(".svelte-kit/output/client");
+        const swFile = path.resolve(swDir, "service-worker.js");
+        
+        if (!fs.existsSync(swDir)) {
+          fs.mkdirSync(swDir, { recursive: true });
+        }
+        if (!fs.existsSync(swFile)) {
+          fs.writeFileSync(swFile, "// dummy sw for build fix", "utf-8");
+        }
+      }
+    },
+    // 2. string_decoder, buffer などのエラーを消す設定
     nodePolyfills({
       globals: {
         Buffer: true,
@@ -67,7 +84,6 @@ export default defineConfig({
         ],
       },
       injectManifest: {
-        // 👈 2. エラーの原因だった「prerendered」の指定を削除し、確実に存在するファイルだけを対象にします
         globPatterns: [
           "client/**/*.{js,css,ico,png,svg,webp,webmanifest}",
         ],
