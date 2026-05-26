@@ -1,7 +1,4 @@
-import {
-  type EventTemplate,
-  FileServerPreference,
-} from "@nostr-dev-kit/ndk";
+import type { EventTemplate } from "@nostr-dev-kit/ndk";
 
 export function normalizeServerUrls(serverUrls: string[]): string[] {
   console.log("[nip96] normalizeServerUrls input:", serverUrls);
