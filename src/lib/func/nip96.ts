@@ -234,11 +234,15 @@ export async function readServerConfig(
   let fetchUrl = "";
 
   try {
-    const { origin } = new URL(serverUrl);
+    // 💡 あなたのCloudflare WorkersのURLに固定します
+    const myWorkerUrl = "https://nostr-cloudinary-proxy.ryotagtagtag.workers.dev"; 
+    const { origin } = new URL(myWorkerUrl);
     fetchUrl = origin + HTTPROUTE;
   } catch (error) {
     throw new Error("Invalid URL");
   }
+  
+  // (これ以降の fetch 処理などはそのまま)
 
   try {
     const response = await fetch(fetchUrl);
