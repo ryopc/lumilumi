@@ -12,6 +12,7 @@
   },
   "devDependencies": {
     "vite-plugin-node-polyfills": "^0.22.0",
+    "wrangler": "^4.17.0"
     "@melt-ui/svelte": "^0.86.6",
     "@neoconfetti/svelte": "^2.2.2",
     "@sveltejs/adapter-cloudflare": "^7.2.8",
