@@ -17,21 +17,6 @@ export default defineConfig({
     },
   },
   plugins: [
-    // 💡 1. 完璧なバグ回避策：ビルド前にダミーファイルを強制生成してENOENTを防ぐ
-    {
-      name: "pwa-sw-fix",
-      buildStart() {
-        const swDir = path.resolve(".svelte-kit/output/client");
-        const swFile = path.resolve(swDir, "service-worker.js");
-        
-        if (!fs.existsSync(swDir)) {
-          fs.mkdirSync(swDir, { recursive: true });
-        }
-        if (!fs.existsSync(swFile)) {
-          fs.writeFileSync(swFile, "// dummy sw for build fix", "utf-8");
-        }
-      }
-    },
     // 2. string_decoder, buffer などのエラーを消す設定
     nodePolyfills({
       globals: {
