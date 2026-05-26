@@ -2,6 +2,31 @@ const FILE_SERVER_PREFERENCE_KIND = 10096;
 
 import type { EventTemplate } from "@nostr-dev-kit/ndk";
 
+// 追加: NIP-96サーバーの設定情報定義
+export interface Nip96ServerConfig {
+  api_url: string;
+  download_url?: string;
+  [key: string]: any;
+}
+
+// 追加: upload.ts から呼び出されている関数
+export async function readServerConfig(serverUrl: string): Promise<Nip96ServerConfig> {
+  console.log("[nip96] readServerConfig input:", serverUrl);
+  try {
+    const baseUrl = serverUrl.endsWith("/") ? serverUrl.slice(0, -1) : serverUrl;
+    const response = await fetch(`${baseUrl}/.well-known/nostr/nip96.json`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const config = await response.json();
+    console.log("[nip96] readServerConfig output:", config);
+    return config as Nip96ServerConfig;
+  } catch (err) {
+    console.error("[nip96] Failed to read server config:", err);
+    throw err;
+  }
+}
+
 export function normalizeServerUrls(serverUrls: string[]): string[] {
   console.log("[nip96] normalizeServerUrls input:", serverUrls);
 
@@ -38,7 +63,8 @@ export function generateFSPEventTemplate(
   }
 
   const eventTemplate: EventTemplate = {
-    kind: FileServerPreference,
+    // 修正: 未定義だった FileServerPreference を FILE_SERVER_PREFERENCE_KIND に変更
+    kind: FILE_SERVER_PREFERENCE_KIND,
     content: "",
     tags: normalized.map((serverUrl) => ["server", serverUrl]),
     created_at: Math.floor(Date.now() / 1000),
