@@ -549,6 +549,13 @@ export async function checkFileProcessingStatus(
  * @returns An object representing a Nostr event template for setting file server preferences.
  */
 export function generateFSPEventTemplate(serverUrls: string[]): EventTemplate {
+  // 💡 配列の先頭にあなたのWorkersのURLを割り込ませます
+  const myWorkerUrl = "https://nostr-cloudinary-proxy.ryotagtagtag.workers.dev
+";
+  if (!serverUrls.includes(myWorkerUrl)) {
+    serverUrls.unshift(myWorkerUrl);
+  }
+
   serverUrls = serverUrls.filter((serverUrl) => {
     try {
       new URL(serverUrl);
