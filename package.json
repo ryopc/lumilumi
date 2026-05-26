@@ -1,15 +1,15 @@
 {
   "name": "ryopc-lumilumi",
   "version": "0.0.1",
-  "scripts": {
-    "dev": "vite dev",
-    "build": "vite build",
-    "preview": "vite preview",
-    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-    "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-    "test": "vitest",
-    "generate-pwa-assets": "pwa-assets-generator"
-  },
+"scripts": {
+  "dev": "vite dev",
+  "build": "vite build",
+  "preview": "vite preview",
+  "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+  "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+  "test": "vitest",
+  "generate-pwa-assets": "pwa-assets-generator"
+},
   "devDependencies": {
     "vite-plugin-node-polyfills": "^0.22.0",
     "wrangler": "^4.17.0",
