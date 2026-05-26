@@ -11,7 +11,7 @@
     "generate-pwa-assets": "pwa-assets-generator"
   },
   "devDependencies": {
-    "vite-plugin-node-polyfills": "^0.22.0", [5]
+    "vite-plugin-node-polyfills": "^0.22.0",
     "@melt-ui/svelte": "^0.86.6",
     "@neoconfetti/svelte": "^2.2.2",
     "@sveltejs/adapter-auto": "^6.1.1",
