@@ -3,8 +3,6 @@ import { SvelteKitPWA } from "@vite-pwa/sveltekit";
 import { defineConfig } from "vite";
 import { svelteTesting } from "@testing-library/svelte/vite";
 import { nodePolyfills } from "vite-plugin-node-polyfills";
-import fs from "fs"; // 👈 同期生成用に追記
-import path from "path"; // 👈 同期生成用に追記
 
 export default defineConfig({
   server: {
@@ -16,17 +14,23 @@ export default defineConfig({
       usePolling: true,
     },
   },
+  // 💡 Cloudflare環境でNode.jsの組み込みモジュールを要求された場合のクラッシュを防ぐ
+  ssr: {
+    noExternal: ["vite-plugin-node-polyfills"],
+    external: ["node:fs", "node:path"] 
+  },
   plugins: [
-    // 2. string_decoder, buffer などのエラーを消す設定
+    // 💡 SvelteKitのプラグインを配列の先頭に配置します
+    sveltekit(),
+    svelteTesting(),
     nodePolyfills({
+      // 💡 ブラウザ環境（クライアントサイド）のみでポリフィルを有効化
       globals: {
         Buffer: true,
         process: true,
       },
       protocolImports: true,
     }),
-    svelteTesting(),
-    sveltekit(),
     SvelteKitPWA({
       strategies: "injectManifest",
       srcDir: "./src",
@@ -34,7 +38,6 @@ export default defineConfig({
       scope: "/",
       injectRegister: "auto",
       registerType: "prompt",
-
       pwaAssets: {
         config: true,
       },
@@ -69,6 +72,7 @@ export default defineConfig({
         ],
       },
       injectManifest: {
+        // 💡 Cloudflareの出力構造に合わせるためclient配下を明示
         globPatterns: [
           "client/**/*.{js,css,ico,png,svg,webp,webmanifest}",
         ],
